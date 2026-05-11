@@ -93,10 +93,19 @@ div[data-testid="metric-container"] {
 
 
 # ────────────────────────────────────────────────────────────
+# PATH CONFIGURATION - FIXED FOR STREAMLIT CLOUD
+# ────────────────────────────────────────────────────────────
+# Get the folder where task6_dashboard.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SAVE_DIR = BASE_DIR  # ← All your .pkl files should be here
+
+# Optional: Show debug info on the app
+st.info(f"📁 Looking for models in: {SAVE_DIR}")
+
+
+# ────────────────────────────────────────────────────────────
 # CONSTANTS - keyword lists from TF-IDF training vocabulary
 # ────────────────────────────────────────────────────────────
-SAVE_DIR = r"C:\Users\Private\OneDrive\Desktop\cleaned"
-
 ICONS = {
     "Depression":          "🧠",
     "High Blood Pressure": "❤️",
@@ -165,23 +174,33 @@ MIN_MODEL_CONF    = 40.0
 
 
 # ────────────────────────────────────────────────────────────
-# LOAD ASSETS
+# LOAD ASSETS - With Better Error Messages
 # ────────────────────────────────────────────────────────────
-@st.cache_resource(show_spinner="Loading model...")
+@st.cache_resource(show_spinner="Loading models...")
 def load_assets():
-    return (
-        joblib.load(os.path.join(SAVE_DIR, "final_tuned_model.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "label_encoder_condition.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "tfidf_vectorizer.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "tfidf_chi2_selector.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "tfidf_pca.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "final_scaler.pkl")),
-        joblib.load(os.path.join(SAVE_DIR, "final_scalar_features.pkl")),
-    )
+    try:
+        return (
+            joblib.load(os.path.join(SAVE_DIR, "final_tuned_model.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "label_encoder_condition.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "tfidf_vectorizer.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "tfidf_chi2_selector.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "tfidf_pca.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "final_scaler.pkl")),
+            joblib.load(os.path.join(SAVE_DIR, "final_scalar_features.pkl")),
+        )
+    except FileNotFoundError as e:
+        st.error(f"❌ Missing model file: {e}")
+        st.info("Please make sure all .pkl files are uploaded inside the same folder as this script.")
+        st.stop()
 
 @st.cache_data(show_spinner="Loading data...")
 def load_data():
-    return pd.read_csv(os.path.join(SAVE_DIR, "features_extracted.csv"))
+    try:
+        return pd.read_csv(os.path.join(SAVE_DIR, "features_extracted.csv"))
+    except FileNotFoundError as e:
+        st.error(f"❌ Missing data file: {e}")
+        st.info("Please make sure features_extracted.csv is uploaded inside the same folder as this script.")
+        st.stop()
 
 (model, le_cond, tfidf, tfidf_selector,
  tfidf_pca, final_scaler, final_features) = load_assets()
