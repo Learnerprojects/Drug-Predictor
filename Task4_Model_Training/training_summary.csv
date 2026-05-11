@@ -1,0 +1,18 @@
+Metric,Value
+Model,Hist Gradient Boosting
+Training Samples,5570
+Test Samples,1393
+Feature Dimensions,1336
+Training Time (s),85.58
+Train Accuracy,0.998
+Test Accuracy,0.9763
+Test F1 (weighted),0.9763
+Test Precision (weighted),0.9764
+Test Recall (weighted),0.9763
+Macro AUC (ROC),0.9988
+Weighted AUC (ROC),0.9988
+5-Fold CV Accuracy,0.9805
+5-Fold CV Std,0.0048
+95% Confidence Interval,"[0.9710, 0.9900]"
+Overfit Gap,0.0217
+Iterations Used,197

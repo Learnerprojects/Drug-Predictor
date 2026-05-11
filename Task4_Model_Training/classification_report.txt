@@ -1,0 +1,20 @@
+TASK 4 — MODEL TRAINING
+Model          : Hist Gradient Boosting
+Training Time  : 85.6s
+Iterations Used: 197
+
+Train Accuracy : 0.9980
+Test  Accuracy : 0.9763
+Test  F1 Score : 0.9763
+Overfit Gap    : 0.0217
+
+CLASSIFICATION REPORT:
+                     precision    recall  f1-score   support
+
+         Depression       0.99      0.97      0.98       464
+High Blood Pressure       0.97      0.97      0.97       464
+    Type 2 Diabetes       0.97      0.98      0.98       465
+
+           accuracy                           0.98      1393
+          macro avg       0.98      0.98      0.98      1393
+       weighted avg       0.98      0.98      0.98      1393
